@@ -18,15 +18,15 @@ use App\Http\Controllers\DashboardController;
 */
 
 Route::get('/', [ClientController::class, 'index']);
-<<<<<<< HEAD
+
 Route::get('/produk/{id}', [ClientController::class, 'produk']);
-=======
+
 
 
 Route::get('/produk/{id}', [ClientController::class, 'produk']);
 Route::get('/pembayaran/detail', [ClientController::class, 'pembayaran_detail'])->name('detail-pembayaran');
 Route::post('/pembayaran', [ClientController::class, 'pembayaran'])->name('pembayaran');
->>>>>>> 01a85b3 (Update 1 july)
+
 
 
 Route::group(['prefix' => 'admin','middleware' => 'auth'], function(){
@@ -40,13 +40,6 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'], function(){
         ]]);
     Route::post('/deleteproduct', [ProductController::class, 'delete'])->name('delete-product');
     // Route::post('/product/edit/{id}', [ProductController::class, 'simpanProduk'])->name('update-product');
-<<<<<<< HEAD
-
-=======
-    
-   
->>>>>>> 01a85b3 (Update 1 july)
-
 });
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);
