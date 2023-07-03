@@ -31,18 +31,19 @@ Route::post('/pembayaran', [ClientController::class, 'pembayaran'])->name('pemba
 
 Route::group(['prefix' => 'admin','middleware' => 'auth'], function(){
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
+    
     Route::get('/product', [ProductController::class, 'index'])->name('product');
     Route::get('/product/tambah', [ProductController::class, 'create'])->name('tambah-product');
     Route::post('/product/tambah', [ProductController::class, 'store'])->name('proses-tambah-product');
     Route::resource('product-control', ProductController::class, ['except' => [
         'create','show','destroy'
         ]]);
-    Route::post('/deleteproduct', [ProductController::class, 'delete'])->name('delete-product');
-    // Route::post('/product/edit/{id}', [ProductController::class, 'simpanProduk'])->name('update-product');
-});
-Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/login', [LoginController::class, 'authenticate']);
-Route::post('/logout', [LoginController::class, 'logout']);
-
-
+        Route::post('/deleteproduct', [ProductController::class, 'delete'])->name('delete-product');
+        // Route::post('/product/edit/{id}', [ProductController::class, 'simpanProduk'])->name('update-product');
+    });
+    Route::get('/login', [LoginController::class, 'index'])->name('login');
+    Route::post('/login', [LoginController::class, 'authenticate']);
+    Route::post('/logout', [LoginController::class, 'logout']);
+    
+    
+    

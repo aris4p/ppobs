@@ -31,21 +31,21 @@
                 <th scope="col">Stok</th>
                 <th scope="col">Harga</th>
                 <th scope="col">Aksi</th>
-
+                
             </tr>
         </thead>
         {{-- <tbody>
             @foreach ($products as $product)
-
+            
             <tr>
                 <th scope="row">{{ $no++ }}</th>
                 <td>{{ $product->nama }}</td>
                 <td>{{ $product->qty }}</td>
                 <td>Rp. {{ number_format($product->harga) }}</td>
-
-
+                
+                
                 <td >
-
+                    
                     <a href="{{ route ('product-edit', ['id'=>$product->id]) }}" class="btn btn-sm btn-warning idProduct" id="idProduct" data-bs-toggle="modal" data-bs-target="#basicModal">Edit</a>
                     <form action="{{ route('delete-product', $product->id)}}" method="post" class="d-inline">
                         @method('DELETE')
@@ -53,14 +53,14 @@
                         <button class="btn btn-sm btn-danger" onclick="return confirm('Apakah yakin ingin menghapus?')" type="submit" value="Hapus" />Hapus</button>
                     </form>
                 </td>
-
+                
             </tr>
-
-
+            
+            
             @endforeach
         </tbody> --}}
     </table>
-
+    
     <!-- Modal Tambah data -->
     <div class="modal fade" id="tambah-produk" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -101,10 +101,10 @@
         </div>
     </div>
     {{-- End Tambah Modal --}}
-
-
+    
+    
     <!-- Edit Modal -->
-    <form onSubmit="JavaScript:submitHandler()"  action="javascript:void(0)" class="form-horizontal">
+    <form  action="javascript:void(0)" class="form-horizontal" onSubmit="return checkForm(this);">
         @csrf
         <div class="modal fade" id="modal-form" tabindex="-1">
             <div class="modal-dialog">
@@ -114,7 +114,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-
+                        
                         <div class="form-group">
                             <input type="hidden" name="id" id="id" class="form-control">
                             <label class="col-lg control-label">Nama Produk</label>
@@ -156,9 +156,9 @@ src="//cdn.datatables.net/v/bs5/jq-3.6.0/dt-1.11.3/af-2.3.7/b-2.1.1/cr-1.5.5/dat
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
+        
     });
-
+    
     //membuat datatables
     var table = $('.table').DataTable({
         processing: true,
@@ -200,9 +200,9 @@ src="//cdn.datatables.net/v/bs5/jq-3.6.0/dt-1.11.3/af-2.3.7/b-2.1.1/cr-1.5.5/dat
         },
         ]
     });
-
-
-
+    
+    
+    
     // Tambah Data
     $('body').on('click', '.tombol-tambah-produk', function(e){
         $('#tambah-produk').modal('show');
@@ -210,8 +210,8 @@ src="//cdn.datatables.net/v/bs5/jq-3.6.0/dt-1.11.3/af-2.3.7/b-2.1.1/cr-1.5.5/dat
             simpan();
         });
     });
-
-
+    
+    
     //edit Produk
     $('body').on('click', '.editProduk', function(e){
         var id = $(this).data('id');
@@ -223,34 +223,34 @@ src="//cdn.datatables.net/v/bs5/jq-3.6.0/dt-1.11.3/af-2.3.7/b-2.1.1/cr-1.5.5/dat
                 $('#nama').val(response.result.nama);
                 $('#qty').val(response.result.qty);
                 $('#harga').val(response.result.harga);
-
+                
                 console.log(response.result);
                 $('.tombol-simpan').click(function(){
                     simpan(id);
                 });
             }
-
+            
         });
     });
-
-
-
+    
+    
+    
     // tutup modal
     $('.close').click(function(){
-            $("#tambah-produk").modal('hide');
-        });
+        $("#tambah-produk").modal('hide');
+    });
     $('#tambah-produk').on('hidden.bs.modal', function(){
         $('#nama').val('');
         $('#qty').val('');
         $('#harga').val('');
-
+        
         $('.alert-danger').addClass('d-none');
         $('.alert-danger').html('');
-
+        
         $('.alert-success').addClass('d-none');
         $('.alert-success').html('');
     });
-
+    
     // function simpan dan update
     function simpan(id = '') {
         if (id == '') {
@@ -264,6 +264,7 @@ src="//cdn.datatables.net/v/bs5/jq-3.6.0/dt-1.11.3/af-2.3.7/b-2.1.1/cr-1.5.5/dat
             url: var_url,
             type: var_type,
             data: {
+              
                 nama: $('#nama').val(),
                 qty: $('#qty').val(),
                 harga: $('#harga').val()
@@ -283,8 +284,8 @@ src="//cdn.datatables.net/v/bs5/jq-3.6.0/dt-1.11.3/af-2.3.7/b-2.1.1/cr-1.5.5/dat
                 }
             });
         }
-
-
+        
+        
         //delete produk
         // Delete record
         $('body').on('click','.deleteProduk',function(){
@@ -307,9 +308,21 @@ src="//cdn.datatables.net/v/bs5/jq-3.6.0/dt-1.11.3/af-2.3.7/b-2.1.1/cr-1.5.5/dat
                     }
                 });
             }
-
+            
         });
-
+        
+        let formSubmitted = false;
+        function checkForm(form)
+        {
+            if(formSubmitted) {
+                return false;
+            }
+            form.saveBtn.disabled = true;
+            formSubmitted = true;
+            return true;
+        }
+        
     </script>
-
+    
     @endsection
+    

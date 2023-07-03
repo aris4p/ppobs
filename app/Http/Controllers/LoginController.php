@@ -24,11 +24,11 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)){
             $request->session()->regenerate();
 
-<<<<<<< HEAD
-            return redirect()->intended('/dashboard');
-=======
-            return redirect()->intended('/admin/dashboard');
->>>>>>> 01a85b3 (Update 1 july)
+
+       
+
+            return redirect()->intended(route('dashboard'));
+
         }
         return back()->with('loginError','email atau password salah');
     }
@@ -39,7 +39,7 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/admin/dashboard');
+        return redirect(route('login'));
 
 
     }

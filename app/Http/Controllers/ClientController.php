@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -10,33 +11,12 @@ class ClientController extends Controller
     public function index()
     {
         $product = Product::all();
-<<<<<<< HEAD
-
-        return view('index', compact('product'));
-    }
-
-    public function produk($id)
-    {
-
-
-        $apiKey = env('TRIPAY_API_KEY');
-
-        $curl = curl_init();
-
-=======
-        
-        // $privateKey   = env('TRIPAY_PRIVATE_KEY');
-        // $merchantCode = 'T21486';
-        // $merchantRef  = 'INV6969';
-        // $amount       = 1000000;
-
-        // $signature = hash_hmac('sha256', $merchantCode.$merchantRef.$amount, $privateKey);
-        
-        // dd($privateKey);
 
 
         return view('index', compact('product'));
     }
+
+   
     
     public function produk($id)
     {
@@ -46,7 +26,7 @@ class ClientController extends Controller
         
         $curl = curl_init();
         
->>>>>>> 01a85b3 (Update 1 july)
+
         curl_setopt_array($curl, array(
             CURLOPT_FRESH_CONNECT  => true,
             CURLOPT_URL            => 'https://tripay.co.id/api-sandbox/merchant/payment-channel',
@@ -56,7 +36,7 @@ class ClientController extends Controller
             CURLOPT_FAILONERROR    => false,
             CURLOPT_IPRESOLVE      => CURL_IPRESOLVE_V4
         ));
-<<<<<<< HEAD
+
 
         $response = curl_exec($curl);
         $error = curl_error($curl);
@@ -64,8 +44,6 @@ class ClientController extends Controller
         curl_close($curl);
 
         $result = json_decode($response)->data;
-
-=======
         
         $response = curl_exec($curl);
         $error = curl_error($curl);
@@ -76,15 +54,15 @@ class ClientController extends Controller
         
         $result = json_decode($response)->data;
         // dd($result);
->>>>>>> 01a85b3 (Update 1 july)
+
         $produk = Product::where('id', $id)->first();
         // dd($produk);
         return view('produk.produk',
         compact('produk','result'));
     }
-<<<<<<< HEAD
-}
-=======
+
+
+
     
     public function pembayaran(Request $request)
     {
@@ -161,7 +139,7 @@ class ClientController extends Controller
             curl_close($curl);
            
          $responses  = json_decode($response, true);
-          return $response ?: $error; 
+        //   return $response ?: $error; 
             // if ($responses['success'] === true){
 
             // return $response;
@@ -169,10 +147,15 @@ class ClientController extends Controller
             
             // return redirect()->back();
             
+            Transaction::create([
+                'reference' => $responses['data']['reference'],
+                'amount' => $responses['data']['amount'],
+                'status' => $responses['data']['status'],
+            ]);
        
             
         }
-    
+
 
     public function pembayaran_detail(Request $request)
     {
@@ -181,5 +164,6 @@ class ClientController extends Controller
         return view ('produk.pembayaran_detail', compact('req'));
     }
 }
+
     
->>>>>>> 01a85b3 (Update 1 july)
+
