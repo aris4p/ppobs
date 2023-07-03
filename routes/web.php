@@ -24,8 +24,9 @@ Route::get('/produk/{id}', [ClientController::class, 'produk']);
 
 
 Route::get('/produk/{id}', [ClientController::class, 'produk']);
-Route::get('/pembayaran/detail', [ClientController::class, 'pembayaran_detail'])->name('detail-pembayaran');
+// Route::get('/pembayaran/detail', [ClientController::class, 'pembayaran_detail'])->name('detail-pembayaran');
 Route::post('/pembayaran', [ClientController::class, 'pembayaran'])->name('pembayaran');
+Route::get('/pembayaran/proses', [ClientController::class, 'proses'])->name('proses');
 
 
 

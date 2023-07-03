@@ -52,7 +52,7 @@ class ClientController extends Controller
         
         
         
-      
+        
         
         $produk = Product::where('id', $id)->first();
         // dd($produk);
@@ -136,8 +136,19 @@ class ClientController extends Controller
             $error = curl_error($curl);
             
             curl_close($curl);
+
+            $result = (json_decode($response));
             
-            $responses  = json_decode($response, true);
+            if (json_decode($response)->success != true){
+               dd($result->message);
+               return response()->json([
+                'Message' => $result->message,
+                
+            ]);
+            }else{
+                $result  = json_decode($response, true);
+            }
+            
             //   return $response ?: $error; 
             // if ($responses['success'] === true){
                 
@@ -145,13 +156,16 @@ class ClientController extends Controller
                 // }
                 
                 // return redirect()->back();
+        
                 
                 Transaction::create([
-                    'reference' => $responses['data']['reference'],
-                    'amount' => $responses['data']['amount'],
-                    'status' => $responses['data']['status'],
+                    'reference' => $result['data']['reference'],
+                    'amount' => $result['data']['amount'],
+                    'status' => $result['data']['status'],
                 ]);
                 
+                
+                return view ('payment.payment');
                 
             }
             
@@ -162,6 +176,8 @@ class ClientController extends Controller
                 dd($req);
                 return view ('produk.pembayaran_detail', compact('req'));
             }
+            
+            
         }
         
         
