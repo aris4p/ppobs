@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class ClientController extends Controller
 {
@@ -146,7 +147,7 @@ class ClientController extends Controller
                 
             ]);
             }else{
-                $result  = json_decode($response, true);
+                $result  = json_decode($response)->data;
             }
             
             //   return $response ?: $error; 
@@ -157,24 +158,27 @@ class ClientController extends Controller
                 
                 // return redirect()->back();
         
-                
-                Transaction::create([
-                    'reference' => $result['data']['reference'],
-                    'amount' => $result['data']['amount'],
-                    'status' => $result['data']['status'],
+                // dd($result);
+                $transaction = Transaction::create([
+                    'reference' => $result->reference,
+                    'amount' => $result->amount,
+                    'status' => $result->status,
                 ]);
                 
+                $order_items = $result->order_items;
+                foreach ($order_items as $items){
+                    $items;
+                }
                 
-                return view ('payment.payment');
+               
+                return view ('payment.payment', compact('result','items'));
                 
             }
             
             
-            public function pembayaran_detail(Request $request)
+            public function proses(Request $request)
             {
-                $req = $request->all();
-                dd($req);
-                return view ('produk.pembayaran_detail', compact('req'));
+                
             }
             
             
