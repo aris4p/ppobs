@@ -17,14 +17,15 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
-Route::get('/', [ClientController::class, 'index']);
+Route::get('/', [ClientController::class, 'index'])->name('home');
 
 Route::get('/produk/{id}', [ClientController::class, 'produk']);
 
 
 
 Route::get('/produk/{id}', [ClientController::class, 'produk']);
-// Route::get('/pembayaran/detail', [ClientController::class, 'pembayaran_detail'])->name('detail-pembayaran');
+Route::get('/cek-invoice', [ClientController::class, 'cek_invoice'])->name('cek-invoice');
+Route::get('/invoice', [ClientController::class, 'invoice'])->name('invoice');
 Route::post('/pembayaran', [ClientController::class, 'pembayaran'])->name('pembayaran');
 Route::get('/pembayaran/proses', [ClientController::class, 'proses'])->name('proses');
 

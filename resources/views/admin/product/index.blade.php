@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('layout.admin_main')
 @section('body')
 
 <div class="pagetitle">

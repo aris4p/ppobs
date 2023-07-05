@@ -1,78 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layout.client_main')
+@section('body')
 
-<head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    
-    
-    <title>Dashboard - NiceAdmin Bootstrap Template</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
-    
-    <!-- Favicons -->
-    <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
-    <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
-    
-    <!-- Google Fonts -->
-    <link href="//fonts.gstatic.com" rel="preconnect">
-    <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-    
-    
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    
-    <title>Dashboard - NiceAdmin Bootstrap Template</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
-    
-    <!-- Favicons -->
-    <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
-    <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
-    
-    <!-- Google Fonts -->
-    <link href="//fonts.gstatic.com" rel="preconnect">
-    <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-    
-    
-    
-    
-    <!-- Template Main CSS File -->
-    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
-    
-    
-    
-    <!-- Template Main CSS File -->
-    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
-    
-    
-    <!-- =======================================================
-        * Template Name: NiceAdmin - v2.4.1
-        * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-        * Author: BootstrapMade.com
-        * License: https://bootstrapmade.com/license/
-        ======================================================== -->
-    </head>
-    
-    
-    <body>
-        
-        <!-- ======= Header ======= -->
-        
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <div class="container">
-                <div class="d-flex align-items-center justify-content-between">
-                    <a href="index.html" class="logo d-flex align-items-center">
-                        <img src="assets/img/logo.png" alt="">
-                        <span class="d-none d-lg-block">Produk Kita</span>
-                    </a>
-                </div><!-- End Logo -->
-            </div>
-        </nav><!-- End Header -->
         <section class="mt-4 mb-4">
             <div class="container">
                 <div class="row">
@@ -265,42 +193,6 @@
             </section>
             
             
-            <!-- ======= Footer ======= -->
-            <div class="copyright">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12" style="text-align: center;">
-                            <p>Copyright © 2023 <a href="https://nontonyuk.id/">Belpora</a> - All Rights Reserved. </p>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- End Footer -->
-            
-            <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-            
-            <!-- Vendor JS Files -->
-            <script src="{{  asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
-            <script src="{{  asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-            <script src="{{  asset('assets/vendor/chart.js/chart.min.js') }}"></script>
-            <script src="{{  asset('assets/vendor/echarts/echarts.min.js') }}"></script>
-            <script src="{{  asset('assets/vendor/quill/quill.min.js') }}"></script>
-            <script src="{{  asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
-            <script src="{{  asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
-            <script src="{{  asset('assets/vendor/php-email-form/validate.js') }}"></script>
-            
-            <!-- Template Main JS File -->
-            <script src="{{ asset('assets/js/main.js') }}"></script>
-            <script src="//code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
-            <script type="text/javascript">
-                
-                
-                
-            </script>
-            
-            
-            
-        </body>
-        
-        </html>
+@endsection
         
         

@@ -14,7 +14,9 @@ class ClientController extends Controller
         $product = Product::all();
         
         
-        return view('index', compact('product'));
+        return view('index',[
+            'title' => "Produk Kita"
+        ], compact('product'));
     }
     
     
@@ -57,8 +59,9 @@ class ClientController extends Controller
         
         $produk = Product::where('id', $id)->first();
         // dd($produk);
-        return view('produk.produk',
-        compact('produk','result'));
+        return view('produk.produk',[
+            'title' => "Pemesanan "
+        ],compact('produk','result'));
     }
     
     
@@ -137,15 +140,15 @@ class ClientController extends Controller
             $error = curl_error($curl);
             
             curl_close($curl);
-
+            
             $result = (json_decode($response));
             
             if (json_decode($response)->success != true){
-               dd($result->message);
-               return response()->json([
-                'Message' => $result->message,
-                
-            ]);
+                // dd($result->message);
+                return response()->json([
+                    'Message' => $result->message,
+                    
+                ]);
             }else{
                 $result  = json_decode($response)->data;
             }
@@ -157,7 +160,7 @@ class ClientController extends Controller
                 // }
                 
                 // return redirect()->back();
-        
+                
                 // dd($result);
                 $transaction = Transaction::create([
                     'reference' => $result->reference,
@@ -170,15 +173,62 @@ class ClientController extends Controller
                     $items;
                 }
                 
-               
-                return view ('payment.payment', compact('result','items'));
+                
+                
+                return view ('payment.payment',[
+                    'title' => "Pembayaran"
+                ], compact('result','items'));
                 
             }
             
             
-            public function proses(Request $request)
+            public function cek_invoice(Request $request)
+            {
+                return view('produk.cek-invoice',[
+                    'title' => "Invoice"
+                ]);
+            }
+            
+            public function invoice(Request $request)
             {
                 
+                
+                // dd($request->all());
+                
+    
+                
+                $apiKey = env('TRIPAY_API_KEY');
+                
+                $payload = ['reference'	=> $request->no_invoice];
+                
+                $curl = curl_init();
+                
+                curl_setopt_array($curl, [
+                    CURLOPT_FRESH_CONNECT  => true,
+                    CURLOPT_URL            => 'https://tripay.co.id/api-sandbox/transaction/detail?'.http_build_query($payload),
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_HEADER         => false,
+                    CURLOPT_HTTPHEADER     => ['Authorization: Bearer '.$apiKey],
+                    CURLOPT_FAILONERROR    => false,
+                    CURLOPT_IPRESOLVE      => CURL_IPRESOLVE_V4
+                ]);
+                
+                $response = curl_exec($curl);
+                $error = curl_error($curl);
+                
+                curl_close($curl);
+                
+                $result = json_decode($response)->data;
+
+                $order_items = $result->order_items;
+                foreach ($order_items as $items){
+                    $items;
+                }
+                
+          
+                return view('payment.payment',[
+                    'title' => "Invoice"
+                ], compact('result','items'));
             }
             
             

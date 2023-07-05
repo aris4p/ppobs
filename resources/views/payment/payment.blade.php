@@ -1,65 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layout.client_main')
+@section('body')
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta name="csrf-token" content="{{ csrf_token() }}">
-  
-  <title>Dashboard - NiceAdmin Bootstrap Template</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-  
-  <!-- Favicons -->
-  <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
-  <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
-  
-  <!-- Google Fonts -->
-  <link href="//fonts.gstatic.com" rel="preconnect">
-  <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-  
-  <!-- Vendor CSS Files -->
-  <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-  <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-  <link href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
-  <link href="{{ asset('assets/vendor/quill/quill.snow.css') }}" rel="stylesheet ">
-  <link href="{{ asset('assets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
-  <link href="{{ asset('assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
-  <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
-  
-  <!-- Template Main CSS File -->
-  <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
-  
-  <!-- =======================================================
-    * Template Name: NiceAdmin - v2.4.1
-    * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-    * Author: BootstrapMade.com
-    * License: https://bootstrapmade.com/license/
-    ======================================================== -->
-    
-    
-  </head>
-  
-  <body>
-    <!-- ======= Header ======= -->
-    
-    <nav class="navbar navbar-expand-lg navbar-light">
-      <div class="container">
-        
-        <div class="d-flex align-items-center justify-content-between">
-          <a href="index.html" class="logo d-flex align-items-center">
-            <img src="assets/img/logo.png" alt="">
-            <span class="d-none d-lg-block">Produk Kita</span>
-          </a>
-          
-        </div><!-- End Logo -->
-        
-        
-        
-        
-        
-      </div>
-    </nav><!-- End Header -->
     <section class="mt-4 mb-5">
       <div class="container">
         <div class="card bg-light">
@@ -127,11 +68,11 @@
                     <div class="card-header">
                       <h3>Instruksi Pembayaran</h3>
                     </div>
-                    @foreach ($result->instructions as $title )
+                    @foreach ($result->instructions as $instruksi )
                     <div class="card-body">
-                      <span style="font-size:20px;">{{ $title->title }}</span>
+                      <span style="font-size:20px;">{{ $instruksi->title }}</span>
                       <ul>
-                        @foreach ($title->steps as $steps)
+                        @foreach ($instruksi->steps as $steps)
                           
                         <li>{!! $steps !!}</li>
                         @endforeach
@@ -146,32 +87,8 @@
           </div>
         </div>
       </section>
-      <!-- ======= Footer ======= -->
-      <div class="copyright">
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-12" style="text-align: center;">
-              <p>Copyright © 2023 <a href="https://nontonyuk.id/">Belpora</a> - All Rights Reserved. </p>
-            </div>
-          </div>
-        </div>
-      </div><!-- End Footer -->
-      
-      <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-      
-      <!-- Vendor JS Files -->
-      <script src="{{  asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
-      <script src="{{  asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-      <script src="{{  asset('assets/vendor/chart.js/chart.min.js') }}"></script>
-      <script src="{{  asset('assets/vendor/echarts/echarts.min.js') }}"></script>
-      <script src="{{  asset('assets/vendor/quill/quill.min.js') }}"></script>
-      <script src="{{  asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
-      <script src="{{  asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
-      <script src="{{  asset('assets/vendor/php-email-form/validate.js') }}"></script>
+
       
       
-      
-    </body>
-    
-    </html>
+@endsection
     

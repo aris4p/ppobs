@@ -40,14 +40,14 @@
 <body>
 
 
-    @include('partials.header')
-    @include('partials.sidebar')
+    @include('layout.partials_admin.header')
+    @include('layout.partials_admin.sidebar')
 
     <main id="main" class="main">
         @yield('body')
 
     </main><!-- End #main -->
-    @include('partials.footer')
+    @include('layout.partials_admin.footer')
 
 
 
