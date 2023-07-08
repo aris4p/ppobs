@@ -17,31 +17,32 @@ class ProductController extends Controller
     */
     public function index(Request $request)
     {
+        
         $products = Product::query();
-
+        
         if ($request->ajax()) {
             return Datatables::of($products)
-                ->addIndexColumn()
-                ->addColumn('action', function ($row) {
-                    // kita tambahkan button edit dan hapus
-                    $btn = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="edit btn btn-primary btn-sm editProduk"><i class="fa fa-edit"></i>Edit</a>';
-
-                    $btn .= ' <a href="javascript:void(0)" data-id="' . $row->id . '" class="btn btn-danger btn-sm deleteProduk"><i class="fa fa-trash"></i>Delete</a>';
-
-                    return $btn;
-                })
-                ->editColumn('harga', function ($row) {
-                    return "Rp. " . number_format($row->harga);
-                })
-                ->rawColumns(['action'])
-                ->make(true);
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+                // kita tambahkan button edit dan hapus
+                $btn = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="edit btn btn-primary btn-sm editProduk"><i class="fa fa-edit"></i>Edit</a>';
+                
+                $btn .= ' <a href="javascript:void(0)" data-id="' . $row->id . '" class="btn btn-danger btn-sm deleteProduk"><i class="fa fa-trash"></i>Delete</a>';
+                
+                return $btn;
+            })
+            ->editColumn('harga', function ($row) {
+                return "Rp. " . number_format($row->harga);
+            })
+            ->rawColumns(['action'])
+            ->make(true);
         }
-
+        
         return view('admin.product.index', [
             "title" => 'Product',
         ], compact('products'));
     }
-
+    
     /**
     * Show the form for creating a new resource.
     *
@@ -53,7 +54,7 @@ class ProductController extends Controller
             "title" => 'Tambah Produk',
         ]);
     }
-
+    
     /**
     * Store a newly created resource in storage.
     *
@@ -62,8 +63,8 @@ class ProductController extends Controller
     */
     public function store(Request $request)
     {
-
-       
+        
+        
         $validasi = Validator::make($request->all(), [
             'nama' => 'required',
             'qty' => 'required|numeric',
@@ -75,7 +76,7 @@ class ProductController extends Controller
             'harga.required' => 'Harga Wajib Diisi',
             'harga.numeric' => 'Harga Hanya Angka',
         ]);
-
+        
         if ($validasi->fails()) {
             return response()->json(['errors' => $validasi->errors()]);
         } else {
@@ -84,12 +85,12 @@ class ProductController extends Controller
                 'qty' => $request->input('qty'),
                 'harga' => $request->input('harga'),
             ];
-
+            
             Product::create($data);
             return response()->json(['Success' => "Produk baru ditambahkan"]);
         }
     }
-
+    
     /**
     * Show the form for editing the specified resource.
     *
@@ -99,10 +100,10 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::findOrFail($id);
-
+        
         return response()->json(['result' => $product]);
     }
-
+    
     /**
     * Update the specified resource in storage.
     *
@@ -123,7 +124,7 @@ class ProductController extends Controller
             'harga.required' => 'Harga Wajib Diisi',
             'harga.numeric' => 'Harga Hanya Angka',
         ]);
-
+        
         if ($validasi->fails()) {
             return response()->json(['errors' => $validasi->errors()]);
         } else {
@@ -132,12 +133,12 @@ class ProductController extends Controller
                 'qty' => $request->input('qty'),
                 'harga' => $request->input('harga'),
             ];
-
+            
             Product::where('id', $id)->update($data);
             return response()->json(['Success' => "Berhasil Update Data"]);
         }
     }
-
+    
     /**
     * Remove the specified resource from storage.
     *
@@ -147,9 +148,9 @@ class ProductController extends Controller
     public function delete(Request $request)
     {
         $id = $request->post('id');
-
+        
         $empdata = Product::find($id);
-
+        
         if ($empdata->delete()) {
             $response['success'] = 1;
             $response['msg'] = 'Delete successfully';
@@ -157,10 +158,10 @@ class ProductController extends Controller
             $response['success'] = 0;
             $response['msg'] = 'Invalid ID.';
         }
-
+        
         return response()->json($response);
     }
-
+    
     public function simpanProduk(Request $request)
     {
         Product::updateOrCreate(
@@ -169,9 +170,10 @@ class ProductController extends Controller
                 'nama' => $request->name,
                 'qty' => $request->qty,
                 'harga' => $request->harga,
-            ]
-        );
-
-        return response()->json(['success' => 'Produk saved successfully.']);
+                ]
+            );
+            
+            return response()->json(['success' => 'Produk saved successfully.']);
+        }
     }
-}
+    
