@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12" style="text-align: center;">
-                <p>Copyright © 2023 <a href="https://nontonyuk.id/">Belpora</a> - All Rights Reserved. </p>
+                <p>Copyright © 2023 <a href="//nontonyuk.id/">Belpora</a> - All Rights Reserved. </p>
             </div>
         </div>
     </div>

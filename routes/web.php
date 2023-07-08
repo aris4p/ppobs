@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Payment\TripayCallbackController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,9 +44,9 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'], function(){
         Route::post('/deleteproduct', [ProductController::class, 'delete'])->name('delete-product');
         // Route::post('/product/edit/{id}', [ProductController::class, 'simpanProduk'])->name('update-product');
     });
-    Route::get('/login', [LoginController::class, 'index'])->name('login');
-    Route::post('/login', [LoginController::class, 'authenticate']);
-    Route::post('/logout', [LoginController::class, 'logout']);
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::post('/login', [LoginController::class, 'authenticate']);
+Route::post('/logout', [LoginController::class, 'logout']);
     
-    
+Route::post('callback', [TripayCallbackController::class, 'handle']);
     
