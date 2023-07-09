@@ -30,9 +30,13 @@ class ClientController extends Controller
     
     public function produk($id)
     {
-      
-        // tripay Service
-        $result = $this->tripayService->getPaymentChannels();  
+
+        // Menggunakan HTTP Client Guzzle Laravel
+        $responses = $this->tripayService->getPaymentChannelsLaravel();  
+        $result = json_decode($responses)->data;
+       
+        // Menggunakan CURL
+        // $result = $this->tripayService->getPaymentChannels();  
     
         $produk = Product::where('id', $id)->first();
         // dd($produk);
@@ -48,9 +52,11 @@ class ClientController extends Controller
     {
       
         $product = Product::find($request->id);
+        // mEnggunakan Guzzle
+        $result = $this->tripayService->paymentGuzzle($request, $product);  
         
-        //tripay service
-        $result = $this->tripayService->payment($request, $product);  
+        // Menggunakan Curl    
+        // $result = $this->tripayService->payment($request, $product);  
         
         
         $transaction = Transaction::create([
