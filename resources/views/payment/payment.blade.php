@@ -5,12 +5,12 @@
   <div class="container">
     <div class="card bg-light">
       <div class="card-header card text-white bg-danger">
-        <span style="font-size:22px;">Invoice #NY040723011805393709</span>
+        <span style="font-size:22px;">Invoice #{{ $result->reference }}</span>
       </div>
       <div class="card-body">
         <div class="alert alert-warning" role="alert">
           <span style="font-size:20px;" id="epoch">
-            <i class="fa-solid fa-circle-info"></i> Mohon segera melakukan pembayaran sesuai "Total Bayar" sebelum {{ $localTime }}</span>
+            <i class="fa-solid fa-circle-info"></i> sssss </span>
           </div>
           <div class="row">
             <div class="col-lg-3 mb-4">
@@ -22,6 +22,7 @@
               <div class="card bg-light">
                 <div class="card-header">
                   <h3>Detail Transaksi</h3>
+                  <input type="hidden" id="epochTime" value="{{ $result->expired_time }}">
                 </div>
                 <div class="card-body">
                   <table width="100%">
@@ -49,7 +50,7 @@
                         <th>Kode Referensi</th>
                         <td>{{ $result->reference }}</td>
                       </tr>
-                     
+                      
                       <tr>
                         <th>Total Bayar</th>
                         <td>
@@ -88,7 +89,32 @@
       </div>
     </div>
   </section>
-  
+  <script>
+    // Waktu epoch yang akan dikonversi
+    var epochTime = document.getElementById("epochTime").value;
+    console.log(epochTime);
+    // Membuat objek Date dari waktu epoch
+    var dateObj = new Date(epochTime * 1000);
+    
+    // Opsi format waktu
+    var options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      timeZoneName: 'long'
+    };
+    
+    // Mengkonversi waktu ke waktu lokal
+    var localTime = dateObj.toLocaleString('id-ID', options);
+    
+    // Menampilkan waktu lokal
+    console.log(localTime);
+    // Menampilkan waktu lokal
+    document.getElementById("epoch").innerHTML="Silahkan Bayar Sebelum : "+localTime;
+  </script>
   
   
   @endsection

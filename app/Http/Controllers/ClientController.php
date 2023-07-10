@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Services\TripayService;
 
 use Carbon\Carbon;
-
+use DateTime;
 class ClientController extends Controller
 {
     public function __construct(TripayService $tripayService)
@@ -58,7 +58,7 @@ class ClientController extends Controller
         // Menggunakan Curl    
         // $result = $this->tripayService->payment($request, $product);  
         
-        
+        // dd($result)
         $transaction = Transaction::create([
             'reference' => $result->reference,
             'amount' => $result->amount,
@@ -69,15 +69,11 @@ class ClientController extends Controller
         foreach ($order_items as $items){
             $items;
         }
-        
-        $epochTime = $result->expired_time; // Contoh waktu epoch
-        
-        // Konversi waktu epoch ke waktu lokal
-        $localTime = Carbon::createFromTimestamp($epochTime)->format('d-m-Y , H:i:s');
-        
+    
+      
         return view ('payment.payment',[
             'title' => "Pembayaran"
-        ], compact('result','items','localTime'));
+        ], compact('result','items'));
         
     }
     
@@ -93,23 +89,19 @@ class ClientController extends Controller
     {
         // Tripay Service
         $result = $this->tripayService->invoice($request);
-
+// dd($result);
         $order_items = $result->order_items;
         foreach ($order_items as $items){
             $items;
         }
         
-        $epochTime = $result->expired_time; // Contoh waktu epoch
-        
-        // Konversi waktu epoch ke waktu lokal
-        $localTime = Carbon::createFromTimestamp($epochTime)->format('d-m-Y , H:i:s');
-        
+       
         
         
         
         return view('payment.payment',[
             'title' => "Invoice"
-        ], compact('result','items','localTime'));
+        ], compact('result','items'));
     }
     
     
