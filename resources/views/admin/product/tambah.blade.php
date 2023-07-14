@@ -1,13 +1,13 @@
-@extends('layout.main')
+@extends('layout.admin_main')
 @section('body')
 <div class="card">
     <div class="card-body">
         <h5 class="card-title">Tambah Data Produk</h5>
         <!-- Horizontal Form -->
 
-        @include('partials.pesanerror')
+        @include('layout.partials_admin.pesanerror')
 
-        <form action="{{ route('proses-tambah-product') }}" method="post">
+        <form action="{{ route('product-control.store') }}" method="post" enctype="multipart/form-data">
             @csrf
             {{-- Test aja
             <div class="form-group">
@@ -41,6 +41,12 @@
                 <label for="harga" class="col-sm-2 col-form-label">Harga</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="harga" name="harga">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="gambar" class="col-sm-2 col-form-label">Gambar</label>
+                <div class="col-sm-10">
+                    <input type="file" class="form-control" id="gambar" name="gambar">
                 </div>
             </div>
 

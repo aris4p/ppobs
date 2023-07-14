@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
+use Carbon\Carbon;
 use App\Models\Product;
 use App\Models\Transaction;
+
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\TripayService;
 
-use Carbon\Carbon;
-use DateTime;
 class ClientController extends Controller
 {
     public function __construct(TripayService $tripayService)
@@ -54,26 +56,32 @@ class ClientController extends Controller
         $product = Product::find($request->id);
         // mEnggunakan Guzzle
         $result = $this->tripayService->paymentGuzzle($request, $product);  
-        
+// dd($result);
         // Menggunakan Curl    
         // $result = $this->tripayService->payment($request, $product);  
         
         // dd($result)
+        $str =  strtoupper(Str::random(12));
+        $invoice_id ="PK-$str";
+        // dd(strtoupper($invoice_id));
         $transaction = Transaction::create([
+            'invoice' => $invoice_id,
             'reference' => $result->reference,
             'amount' => $result->amount,
             'status' => $result->status,
+            'createdAt' => $result->expired_time
         ]);
         
         $order_items = $result->order_items;
         foreach ($order_items as $items){
             $items;
         }
-    
+        
+        return redirect()->route('invoice',['no_invoice' => $transaction->invoice]);
       
-        return view ('payment.payment',[
-            'title' => "Pembayaran"
-        ], compact('result','items'));
+        // return view ('payment.payment',[
+        //     'title' => "Pembayaran"
+        // ], compact('result','items','transaction'));
         
     }
     
@@ -87,21 +95,23 @@ class ClientController extends Controller
     
     public function invoice(Request $request)
     {
+        $transaction = Transaction::where('invoice', $request->no_invoice)->first();
         // Tripay Service
-        $result = $this->tripayService->invoice($request);
-// dd($result);
+        $result = $this->tripayService->invoice($request, $transaction);
+        // dd($result);
+
         $order_items = $result->order_items;
         foreach ($order_items as $items){
             $items;
         }
         
-       
         
+  
         
-        
+      
         return view('payment.payment',[
             'title' => "Invoice"
-        ], compact('result','items'));
+        ], compact('result','items','transaction'));
     }
     
     

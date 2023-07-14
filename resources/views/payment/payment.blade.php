@@ -5,7 +5,7 @@
   <div class="container">
     <div class="card bg-light">
       <div class="card-header card text-white bg-danger">
-        <span style="font-size:22px;">Invoice #{{ $result->reference }}</span>
+        <span style="font-size:22px;">Invoice #{{ $transaction->invoice }}</span>
       </div>
       <div class="card-body">
         <div class="alert alert-warning" role="alert">
@@ -27,11 +27,15 @@
                 <div class="card-body">
                   <table width="100%">
                     <tbody>
-                      <tr></tr>
+                      @if ( $result->payment_method  === "QRIS")
+                      <tr>
+                        <td colspan="2" style="text-align: center"><img src="{{ $result->qr_url }}" width="200px"></td>
+                      </tr>
+                      @endif
+                      
                       <tr>
                         <th>Produk</th>
                         <td>{{ $items->name }}</td>
-                        
                       </tr>
                       <tr>
                         <th>Item</th>
@@ -92,7 +96,7 @@
   <script>
     // Waktu epoch yang akan dikonversi
     var epochTime = document.getElementById("epochTime").value;
-    console.log(epochTime);
+    
     // Membuat objek Date dari waktu epoch
     var dateObj = new Date(epochTime * 1000);
     

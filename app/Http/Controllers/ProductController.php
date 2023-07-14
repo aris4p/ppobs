@@ -19,6 +19,7 @@ class ProductController extends Controller
     {
         
         $products = Product::query();
+     
         
         if ($request->ajax()) {
             return Datatables::of($products)
@@ -31,11 +32,20 @@ class ProductController extends Controller
                 
                 return $btn;
             })
+           
+
+            ->addColumn('gambar', function($row){
+              
+                return '<img src="' .asset('gambar_produk/'. $row->gambar ). '" width="50" height="50">';
+            })
+          
+
             ->editColumn('harga', function ($row) {
                 return "Rp. " . number_format($row->harga);
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action','gambar'])
             ->make(true);
+         
         }
         
         return view('admin.product.index', [
@@ -64,30 +74,41 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         
+
         
         $validasi = Validator::make($request->all(), [
             'nama' => 'required',
             'qty' => 'required|numeric',
             'harga' => 'required|numeric',
+            'gambar' => 'required|mimes:png,jpg,gif,svg|max:2048',
         ], [
             'nama.required' => 'Nama Wajib Diisi',
             'qty.required' => 'Stok Wajib Diisi',
             'qty.numeric' => 'Stok Hanya Angka',
             'harga.required' => 'Harga Wajib Diisi',
             'harga.numeric' => 'Harga Hanya Angka',
+          
         ]);
         
         if ($validasi->fails()) {
             return response()->json(['errors' => $validasi->errors()]);
         } else {
+
+  
+            $gambar = time().'.'.$request->gambar->getClientOriginalExtension();
+            $request->gambar->move(public_path('gambar_produk'), $gambar);
+
+
             $data = [
                 'nama' => $request->input('nama'),
                 'qty' => $request->input('qty'),
                 'harga' => $request->input('harga'),
+                'gambar' => $gambar
+                
             ];
             
             Product::create($data);
-            return response()->json(['Success' => "Produk baru ditambahkan"]);
+            return redirect()->route('product')->with('Success' , "Produk baru ditambahkan");
         }
     }
     

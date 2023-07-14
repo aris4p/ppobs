@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('nama');
             $table->bigInteger('qty');
             $table->decimal('harga', $precision =8, $scale = 2);
+            $table->string('gambar')->nullable();
             $table->timestamps();
         });
     }

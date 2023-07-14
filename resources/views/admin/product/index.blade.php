@@ -16,7 +16,7 @@
 </div>
 @endif
 <div class="mb-3">
-    <button class="btn btn-primary tombol-tambah-produk" type="submit">Tambah</button>
+    <a href="{{ route('tambah-product') }}" class="btn btn-primary tombol-tambah-produk" type="submit">Tambah</a>
 </div>
 <section class="section dashboard">
     <!-- Table with hoverable rows -->
@@ -27,6 +27,7 @@
         <thead>
             <tr>
                 <th scope="col">No</th>
+                <th scope="col">Gambar Produk</th>
                 <th scope="col">Nama Produk</th>
                 <th scope="col">Stok</th>
                 <th scope="col">Harga</th>
@@ -62,7 +63,9 @@
     </table>
     
     <!-- Modal Tambah data -->
-    <div class="modal fade" id="tambah-produk" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form  action="javascript:void(0)" class="form-horizontal" onSubmit="return checkForm(this);" enctype='multipart/form-data'>
+        @csrf
+    <div class="modal fade" id="tambah-produk" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  >
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -92,6 +95,12 @@
                             <input type="text" class="form-control" id="harga" name="harga">
                         </div>
                     </div>
+                    <div class="row mb-3">
+                        <label for="harga" class="col-sm-2 col-form-label">Gambar</label>
+                        <div class="col-sm-10">
+                            <input type="file" class="form-control" id="gambar" name="gambar">
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary close" data-dismiss="modal">Tutup</button>
@@ -100,6 +109,7 @@
             </div>
         </div>
     </div>
+    </form>
     {{-- End Tambah Modal --}}
     
     
@@ -177,6 +187,11 @@ src="//cdn.datatables.net/v/bs5/jq-3.6.0/dt-1.11.3/af-2.3.7/b-2.1.1/cr-1.5.5/dat
             searchable: false
         },
         {
+            data: 'gambar',
+            name: 'gambar'
+          
+        },
+        {
             data: 'nama',
             name: 'nama'
         },
@@ -203,124 +218,128 @@ src="//cdn.datatables.net/v/bs5/jq-3.6.0/dt-1.11.3/af-2.3.7/b-2.1.1/cr-1.5.5/dat
     
     
     
-    // Tambah Data
-    $('body').on('click', '.tombol-tambah-produk', function(e){
-        $('#tambah-produk').modal('show');
-        $('.tombol-simpan').click(function(){
-            simpan();
-        });
-    });
+    // // Tambah Data
+    // $('body').on('click', '.tombol-tambah-produk', function(e){
+    //     $('#tambah-produk').modal('show');
+    //     $('.tombol-simpan').click(function(){
+    //         simpan();
+    //     });
+    // });
     
     
-    //edit Produk
-    $('body').on('click', '.editProduk', function(e){
-        var id = $(this).data('id');
-        $.ajax({
-            url: "product-control/"+ id + '/edit',
-            type: 'GET',
-            success:function(response){
-                $('#tambah-produk').modal('show');
-                $('#nama').val(response.result.nama);
-                $('#qty').val(response.result.qty);
-                $('#harga').val(response.result.harga);
+    // //edit Produk
+    // $('body').on('click', '.editProduk', function(e){
+    //     var id = $(this).data('id');
+    //     $.ajax({
+    //         url: "product-control/"+ id + '/edit',
+    //         type: 'GET',
+    //         success:function(response){
+    //             $('#tambah-produk').modal('show');
+    //             $('#nama').val(response.result.nama);
+    //             $('#qty').val(response.result.qty);
+    //             $('#harga').val(response.result.harga);
+    //             $('#gambar').val(response.result.gambar);
                 
-                console.log(response.result);
-                $('.tombol-simpan').click(function(){
-                    simpan(id);
-                });
-            }
+    //             console.log(response.result);
+    //             $('.tombol-simpan').click(function(){
+    //                 simpan(id);
+    //             });
+    //         }
             
-        });
-    });
+    //     });
+    // });
     
     
     
-    // tutup modal
-    $('.close').click(function(){
-        $("#tambah-produk").modal('hide');
-    });
-    $('#tambah-produk').on('hidden.bs.modal', function(){
-        $('#nama').val('');
-        $('#qty').val('');
-        $('#harga').val('');
+    // // tutup modal
+    // $('.close').click(function(){
+    //     $("#tambah-produk").modal('hide');
+    // });
+    // $('#tambah-produk').on('hidden.bs.modal', function(){
+    //     $('#nama').val('');
+    //     $('#qty').val('');
+    //     $('#harga').val('');
         
-        $('.alert-danger').addClass('d-none');
-        $('.alert-danger').html('');
+    //     $('.alert-danger').addClass('d-none');
+    //     $('.alert-danger').html('');
         
-        $('.alert-success').addClass('d-none');
-        $('.alert-success').html('');
-    });
+    //     $('.alert-success').addClass('d-none');
+    //     $('.alert-success').html('');
+    // });
     
-    // function simpan dan update
-    function simpan(id = '') {
-        if (id == '') {
-            var var_url = "{{ route('product-control.store') }}";
-            var var_type = 'POST';
-        } else {
-            var var_url = 'product-control/'+id;
-            var var_type = 'PUT';
-        }
-        $.ajax({
-            url: var_url,
-            type: var_type,
-            data: {
+    // // function simpan dan update
+    // function simpan(id = '') {
+    //     if (id == '') {
+    //         var var_url = "{{ route('product-control.store') }}";
+    //         var var_type = 'POST';
+    //     } else {
+    //         var var_url = 'product-control/'+id;
+    //         var var_type = 'PUT';
+    //     }
+    //     $.ajax({
+    //         url: var_url,
+    //         type: var_type,
+    //         data: {
               
-                nama: $('#nama').val(),
-                qty: $('#qty').val(),
-                harga: $('#harga').val()
-            },
-            success: function(response) {
-                if (response.errors) {
-                    $('.alert-danger').removeClass('d-none').find('ul').remove();
-                    $('.alert-danger').append("<ul>");
-                        $.each(response.errors, function(key, value) {
-                            $('.alert-danger').find('ul').append("<li>" + value + "</li>");
-                        });
-                        $('.alert-danger').append("</ul>");
-                    } else {
-                        $('.alert-success').removeClass('d-none').html(response.Success);
-                    }
-                    $('.table').DataTable().ajax.reload();
-                }
-            });
-        }
+    //             nama: $('#nama').val(),
+    //             qty: $('#qty').val(),
+    //             harga: $('#harga').val(),
+    //             gambar: $('#gambar').val()
+                
+    //         },
+           
+    //         success: function(response) {
+    //             if (response.errors) {
+    //                 $('.alert-danger').removeClass('d-none').find('ul').remove();
+    //                 $('.alert-danger').append("<ul>");
+    //                     $.each(response.errors, function(key, value) {
+    //                         $('.alert-danger').find('ul').append("<li>" + value + "</li>");
+    //                     });
+    //                     $('.alert-danger').append("</ul>");
+    //                 } else {
+    //                     $('.alert-success').removeClass('d-none').html(response.Success);
+    //                 }
+    //                 $('.table').DataTable().ajax.reload();
+    //             }
+    //         });
+    //     }
         
         
-        //delete produk
-        // Delete record
-        $('body').on('click','.deleteProduk',function(){
-            var id = $(this).data('id');
-            console.log(id);
-            var deleteConfirm = confirm("Are you sure?");
-            if (deleteConfirm == true) {
-                // AJAX request
-                $.ajax({
-                    url: "{{ route('delete-product') }}",
-                    type: 'post',
-                    data: {_token: CSRF_TOKEN,id: id},
-                    success: function(response){
-                        if(response.success == 1){
-                            // Reload DataTable
-                            table.ajax.reload();
-                        }else{
-                            alert("Invalid ID.");
-                        }
-                    }
-                });
-            }
+    //     //delete produk
+    //     // Delete record
+    //     $('body').on('click','.deleteProduk',function(){
+    //         var id = $(this).data('id');
+    //         console.log(id);
+    //         var deleteConfirm = confirm("Are you sure?");
+    //         if (deleteConfirm == true) {
+    //             // AJAX request
+    //             $.ajax({
+    //                 url: "{{ route('delete-product') }}",
+    //                 type: 'post',
+    //                 data: {_token: CSRF_TOKEN,id: id},
+    //                 success: function(response){
+    //                     if(response.success == 1){
+    //                         // Reload DataTable
+    //                         table.ajax.reload();
+    //                     }else{
+    //                         alert("Invalid ID.");
+    //                     }
+    //                 }
+    //             });
+    //         }
             
-        });
+    //     });
         
-        let formSubmitted = false;
-        function checkForm(form)
-        {
-            if(formSubmitted) {
-                return false;
-            }
-            form.saveBtn.disabled = true;
-            formSubmitted = true;
-            return true;
-        }
+    //     let formSubmitted = false;
+    //     function checkForm(form)
+    //     {
+    //         if(formSubmitted) {
+    //             return false;
+    //         }
+    //         form.saveBtn.disabled = true;
+    //         formSubmitted = true;
+    //         return true;
+    //     }
         
     </script>
     

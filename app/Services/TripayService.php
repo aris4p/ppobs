@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Http;
 
 class TripayService{
@@ -12,7 +13,7 @@ class TripayService{
     public function getPaymentChannelsLaravel()
     {
         $apikey = config('Tripay.api_key');
-      
+        
         $bearer = "Bearer $apikey";
      
         $response = Http::withHeaders([
@@ -180,11 +181,14 @@ class TripayService{
             
         }
         
-        public function invoice($request)
+        public function invoice($request, $transaction)
         {
             $apiKey = config('Tripay.api_key');
+
+            // $invoice = Transaction::where('invoice', $request->no_invoice)->first();
+           
             
-            $payload = ['reference'	=> $request->no_invoice];
+            $payload = ['reference'	=> $transaction->reference];
             
             $curl = curl_init();
             

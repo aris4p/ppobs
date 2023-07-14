@@ -9,5 +9,7 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    protected  $fillable=['reference','amount','status'];
+    protected  $fillable=['invoice','reference','amount','status','createdAt'];
+
+    public $timestamps = false;
 }
