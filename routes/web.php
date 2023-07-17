@@ -38,10 +38,12 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'], function(){
     Route::get('/product', [ProductController::class, 'index'])->name('product');
     Route::get('/product/tambah', [ProductController::class, 'create'])->name('tambah-product');
     Route::post('/product/tambah', [ProductController::class, 'store'])->name('proses-tambah-product');
+    Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('proses-edit-product');
+    Route::post('/product/edit/{id}', [ProductController::class, 'update'])->name('proses-update-product');
+    Route::post('/deleteproduct', [ProductController::class, 'delete'])->name('delete-product');
     Route::resource('product-control', ProductController::class, ['except' => [
         'create','show','destroy'
         ]]);
-        Route::post('/deleteproduct', [ProductController::class, 'delete'])->name('delete-product');
         // Route::post('/product/edit/{id}', [ProductController::class, 'simpanProduk'])->name('update-product');
     });
 Route::get('/login', [LoginController::class, 'index'])->name('login');
