@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use App\Models\Transaction;
+use App\Models\Product;
 use App\Http\Controllers\Controller;
 
 class TripayCallbackController extends Controller
@@ -75,6 +76,17 @@ class TripayCallbackController extends Controller
                         'success' => false,
                         'message' => 'Unrecognized payment status',
                     ]);
+            }
+
+            $product = Transaction::with('product')
+            ->where('reference',$data->reference)
+            ->first();
+
+            if($product->status == "PAID")
+            {
+                $total = $product->product->qty-1;
+                $produk = Product::where('id', $product->product_id );
+                $produk->update(['qty' => $total]);
             }
 
             return Response::json(['success' => true]);

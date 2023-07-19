@@ -6,7 +6,8 @@ use DateTime;
 use Carbon\Carbon;
 use App\Models\Product;
 use App\Models\Transaction;
-
+use App\Mail\kirimEmail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\TripayService;
@@ -65,6 +66,7 @@ class ClientController extends Controller
         $invoice_id ="PK-$str";
         // dd(strtoupper($invoice_id));
         $transaction = Transaction::create([
+            'product_id' => $request->id,
             'invoice' => $invoice_id,
             'reference' => $result->reference,
             'amount' => $result->amount,
@@ -77,6 +79,17 @@ class ClientController extends Controller
             $items;
         }
         
+        $pesan = "Email :  $items->name  ";
+        $pesan .= "<h1>Harga :  $items->price </h1>";
+        
+        $data = [
+            'subject' => 'Test dari Aris',
+            'sender_name' => 'test@gmail.com',
+            'isi' => $pesan
+        ];
+       
+        Mail::to($result->customer_email)->send(new kirimEmail($data));
+
         return redirect()->route('invoice',['no_invoice' => $transaction->invoice]);
       
         // return view ('payment.payment',[
@@ -95,6 +108,8 @@ class ClientController extends Controller
     
     public function invoice(Request $request)
     {
+
+       
         $transaction = Transaction::where('invoice', $request->no_invoice)->first();
         // Tripay Service
         $result = $this->tripayService->invoice($request, $transaction);

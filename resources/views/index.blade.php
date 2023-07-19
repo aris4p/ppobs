@@ -63,22 +63,31 @@
                         <div class="tab-content">
 
                             <div id="streaming" class="tab-pane fade show active">
-
+                               
+                                    
                                 <div class="row mt-2">
                                     @foreach ($product as $products)
                                     <div class="col-lg-2 col-4 pb-4">
                                         <div class="card">
                                             <div class="card-body">
-                                                <a href="/produk/{{ $products->id }}"><img style="border-radius:20px;width:100%;" src="https://panel.nontonyuk.id/img/1.jpg" loading="lazy" alt="NETFLIX" sharing="" class="img-thumbnail text-center mt-2"></a>
+                                                @if ($products->qty > 1)   
+                                                <a href="/produk/{{ $products->id}}" ><img style="border-radius:20px;width:100%;" src="https://panel.nontonyuk.id/img/1.jpg" loading="lazy" alt="NETFLIX" sharing="" class="img-thumbnail text-center mt-2"></a>
                                                 <h5 class="card-title text-center">{{ $products->nama }}</h5>
                                                 <p class="card-text text-center">Stock {{ $products->qty }}</p>
+                                                @else
+                                                <img style="border-radius:20px;width:100%;" src="https://panel.nontonyuk.id/img/1.jpg" loading="lazy" alt="NETFLIX" sharing="" class="img-thumbnail text-center mt-2">
+                                                <h5 class="card-title text-center">{{ $products->nama }}</h5>
+                                                <p class="card-text text-center">Stock Habis</p>
 
-
+                                                
+                                                
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
                                     @endforeach
-
+                                    
+                                
                                 </div>
 
 
