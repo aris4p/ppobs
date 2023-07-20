@@ -27,12 +27,12 @@
                 <div class="card-body">
                   <table width="100%">
                     <tbody>
-                      @if ( $result->payment_method  === "QRIS")
+                      @if ( $result->payment_method  === "QRIS" || $result->payment_method  === "QRISC" )
                       <tr>
                         <td colspan="2" style="text-align: center"><img src="{{ $result->qr_url }}" width="200px"></td>
                       </tr>
-                      @endif
-                      
+                      @else   
+                      @endif                  
                       <tr>
                         <th>Produk</th>
                         <td>{{ $items->name }}</td>
@@ -65,6 +65,15 @@
                         <th>Status Bayar</th>
                         <td>{{ $result->status }}</td>
                       </tr>
+                     @if ($result->payment_method  === "OVO")
+                     <tr>
+                      <td>
+                        <input type="hidden" id="urlCheckout" value={{ $result->checkout_url }}>
+                        <button class="btn btn-primary mt-3" onclick="processPayment()">Lanjutkan Pembayaran</button>
+                      </td>
+                     </tr>
+                       
+                     @endif
                     </tbody>
                   </table>
                   <p class="small mt-4">*Cek SPAM pada email jika detail akun tidak masuk.</p>
@@ -118,6 +127,15 @@
     console.log(localTime);
     // Menampilkan waktu lokal
     document.getElementById("epoch").innerHTML="Silahkan Bayar Sebelum : "+localTime;
+
+    
+    function processPayment(){
+      let halPayment = document.getElementById("urlCheckout").value;
+     
+      window.open(halPayment, "_blank");
+      
+    }
+
   </script>
   
   

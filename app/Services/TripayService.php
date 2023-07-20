@@ -141,7 +141,7 @@ class TripayService{
                     //     ]
                 ],
                 'return_url'   => 'https://domainanda.com/redirect',
-                'expired_time' => (time() + (1 * 60 * 60)), // 48 jam
+                'expired_time' => (time() + (24 * 60 * 60)), // 48 jam
                 'signature'    => hash_hmac('sha256', $merchantCode.$merchantRef.$amount, $privateKey)
             ];
             

@@ -126,7 +126,7 @@
                                                 <div class="card-body">
                                                     <div class="row">
                                                         @foreach ($result as $pembayaran)
-                                                        {{-- @if ($pembayaran->group == "E-Wallet") --}}
+                                                        @if ($pembayaran->group == "Virtual Account")
                                                         <div class="col-md-4 col-lg-4 col-sm-4">
                                                             
                                                             <label>
@@ -144,7 +144,7 @@
                                                             </label>
                                                             
                                                         </div>
-                                                        {{-- @endif --}}
+                                                        @endif
                                                         @endforeach
                                                     </div>
                                                 </div>
@@ -154,28 +154,39 @@
                                         <div class="card">
                                             <div class="card-header">
                                                 <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
-                                                    Collapsible Group Item #2
+                                                    E-Wallet
                                                 </a>
                                             </div>
                                             <div id="collapseTwo" class="collapse" data-parent="#accordion">
                                                 <div class="card-body">
-                                                    Lorem ipsum..
+                                                    <div class="row">
+                                                        @foreach ($result as $pembayaran)
+                                                        @if ($pembayaran->group == "E-Wallet")
+                                                        <div class="col-md-4 col-lg-4 col-sm-4">
+                                                            
+                                                            <label>
+                                                                <input type="radio" name="pembayaran" id="pembayaran"  class="card-input-element" value="{{ $pembayaran->code }}" />
+                                                                
+                                                                <div class="card card-default card-input">
+                                                                    <img src="{{ $pembayaran->icon_url }}" class="mx-auto mt-4" width="100px">
+                                                                    <br>
+                                                                    <div class="card-header mx-auto">{{ $pembayaran->name }}</div>
+                                                                    <div class="card-body">
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </label>
+                                                            
+                                                        </div>
+                                                        @endif
+                                                        @endforeach
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
-                                                    Collapsible Group Item #3
-                                                </a>
-                                            </div>
-                                            <div id="collapseThree" class="collapse" data-parent="#accordion">
-                                                <div class="card-body">
-                                                    Lorem ipsum..
-                                                </div>
-                                            </div>
-                                        </div>
+                                      
                                         
                                     </div>
                                 </div>

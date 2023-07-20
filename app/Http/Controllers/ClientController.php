@@ -37,7 +37,7 @@ class ClientController extends Controller
         // Menggunakan HTTP Client Guzzle Laravel
         $responses = $this->tripayService->getPaymentChannelsLaravel();  
         $result = json_decode($responses)->data;
-       
+    //    dd($result);
         // Menggunakan CURL
         // $result = $this->tripayService->getPaymentChannels();  
     
@@ -84,7 +84,7 @@ class ClientController extends Controller
         
         $data = [
             'subject' => 'Test dari Aris',
-            'sender_name' => 'test@gmail.com',
+            'sender_name' => 'admin@gmail.com',
             'isi' => $pesan
         ];
        
