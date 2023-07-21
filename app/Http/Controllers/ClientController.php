@@ -33,14 +33,14 @@ class ClientController extends Controller
     
     public function produk($id)
     {
-
+        
         // Menggunakan HTTP Client Guzzle Laravel
         $responses = $this->tripayService->getPaymentChannelsLaravel();  
         $result = json_decode($responses)->data;
-    //    dd($result);
+        //    dd($result);
         // Menggunakan CURL
         // $result = $this->tripayService->getPaymentChannels();  
-    
+        
         $produk = Product::where('id', $id)->first();
         // dd($produk);
         return view('produk.produk',[
@@ -53,20 +53,20 @@ class ClientController extends Controller
     
     public function pembayaran(Request $request)
     {
-      
-        $product = Product::find($request->id);
+        // return $request->all();
+        $product = Product::find($request->produk_id);
         // mEnggunakan Guzzle
         $result = $this->tripayService->paymentGuzzle($request, $product);  
-// dd($result);
+        // dd($result);
         // Menggunakan Curl    
         // $result = $this->tripayService->payment($request, $product);  
-        
+        // return $result;
         // dd($result)
         $str =  strtoupper(Str::random(12));
         $invoice_id ="PK-$str";
         // dd(strtoupper($invoice_id));
         $transaction = Transaction::create([
-            'product_id' => $request->id,
+            'product_id' => $request->produk_id,
             'invoice' => $invoice_id,
             'reference' => $result->reference,
             'amount' => $result->amount,
@@ -79,6 +79,15 @@ class ClientController extends Controller
             $items;
         }
         
+        $product = Transaction::with('product')
+        ->where('reference',$transaction->reference)
+        ->first();
+        
+        $total = $product->product->qty-1;
+        $produk = Product::where('id', $product->product_id );
+        $produk->update(['qty' => $total]);
+        
+        
         $pesan = "Email :  $items->name  ";
         $pesan .= "<h1>Harga :  $items->price </h1>";
         
@@ -87,50 +96,54 @@ class ClientController extends Controller
             'sender_name' => 'admin@gmail.com',
             'isi' => $pesan
         ];
-       
-        Mail::to($result->customer_email)->send(new kirimEmail($data));
-
-        return redirect()->route('invoice',['no_invoice' => $transaction->invoice]);
-      
-        // return view ('payment.payment',[
-        //     'title' => "Pembayaran"
-        // ], compact('result','items','transaction'));
         
-    }
-    
-    
-    public function cek_invoice(Request $request)
-    {
-        return view('produk.cek-invoice',[
-            'title' => "Invoice"
-        ]);
-    }
-    
-    public function invoice(Request $request)
-    {
+        Mail::to($result->customer_email)->send(new kirimEmail($data));
+        
+        return response()->json(['success' => "Berhasil menyimpan data",
+                                 'invoice_id'=> $transaction->invoice ]);
 
-       
-        $transaction = Transaction::where('invoice', $request->no_invoice)->first();
-        // Tripay Service
-        $result = $this->tripayService->invoice($request, $transaction);
-        // dd($result);
-
-        $order_items = $result->order_items;
-        foreach ($order_items as $items){
-            $items;
+        // return redirect()->route('invoice',['no_invoice' => $transaction->invoice]);
+        
+        // return view ('payment.payment',[
+            //     'title' => "Pembayaran"
+            // ], compact('result','items','transaction'));
+            
         }
         
         
-  
+        public function cek_invoice(Request $request)
+        {
+            return view('produk.cek-invoice',[
+                'title' => "Invoice"
+            ]);
+        }
         
-      
-        return view('payment.payment',[
-            'title' => "Invoice"
-        ], compact('result','items','transaction'));
+        public function invoice(Request $request)
+        {
+            
+            
+            $transaction = Transaction::where('invoice', $request->no_invoice)->first();
+            // Tripay Service
+            $result = $this->tripayService->invoice($request, $transaction);
+            // dd($result);
+            
+            $order_items = $result->order_items;
+            foreach ($order_items as $items){
+                $items;
+            }
+            
+            
+            
+            
+            
+            return view('payment.payment',[
+                'title' => "Invoice"
+            ], compact('result','items','transaction'));
+        }
+        
+        
     }
     
     
-}
-
-
-
+    
+    

@@ -59,10 +59,10 @@ class TripayService{
         $privateKey   = config('Tripay.private_key');
         $merchantCode = 'T21486';
         $merchantRef  = 'INV6969';
-        $amount       = intval($request->product);
+        $amount       = intval($request->harga);
         
         $data = [
-            'method'         => $request->pembayaran,
+            'method'         => $request->metodepembayaran,
             'merchant_ref'   => $merchantRef,
             'amount'         => intval($product->harga),
             'customer_name'  => 'TAMU',
@@ -71,7 +71,7 @@ class TripayService{
             'order_items'    => [
                 [
                     'sku'         => 'FB-06',
-                    'name'        => $request->produk_name,
+                    'name'        => $request->namaproduct,
                     'price'       => intval($product->harga),
                     'quantity'    => 1,
                     'product_url' => 'https://tokokamu.com/product/nama-produk-1',

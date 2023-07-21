@@ -34,7 +34,7 @@ class TripayCallbackController extends Controller
         }
 
         $data = json_decode($json);
-       
+        
         if (JSON_ERROR_NONE !== json_last_error()) {
             return Response::json([
                 'success' => false,
@@ -82,9 +82,9 @@ class TripayCallbackController extends Controller
             ->where('reference',$data->reference)
             ->first();
 
-            if($product->status == "PAID")
+            if($product->status == "EXPIRED")
             {
-                $total = $product->product->qty-1;
+                $total = $product->product->qty+1;
                 $produk = Product::where('id', $product->product_id );
                 $produk->update(['qty' => $total]);
             }
