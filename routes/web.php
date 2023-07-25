@@ -5,6 +5,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DigiflazzController;
+use App\Http\Controllers\VipresellerController;
 use App\Http\Controllers\Payment\TripayCallbackController;
 
 /*
@@ -22,6 +24,9 @@ Route::get('/', [ClientController::class, 'index'])->name('home');
 
 Route::get('/produk/{id}', [ClientController::class, 'produk']);
 
+Route::get('/cek_saldo', [DigiflazzController::class, 'check_saldo']);
+Route::get('/cek_pulsa', [VipresellerController::class, 'getPulsaPrepaid']);
+Route::get('/pulsa/{kode}', [VipresellerController::class, 'pulsa']);
 
 
 Route::get('/produk/{id}', [ClientController::class, 'produk']);

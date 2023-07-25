@@ -11,22 +11,31 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\TripayService;
+use App\Services\VipresellerService;
 
 class ClientController extends Controller
 {
-    public function __construct(TripayService $tripayService)
+    public function __construct(VipresellerService $vipresellerService,TripayService $tripayService)
     {
         $this->tripayService = $tripayService;
+        $this->vipresellerService = $vipresellerService;
     }
     
     public function index()
     {
         $product = Product::all();
+        $result = $this->vipresellerService->getPrepaid(); 
         
-        
+        $group= collect($result)->groupBy('brand');
+        // dd($group);
+        // foreach ($group as $brand => $groupBrand) {
+      
+        //     dd($brand);
+        // }
+      
         return view('index',[
             'title' => "Produk Kita"
-        ], compact('product'));
+        ], compact('product','group'));
     }
     
     
@@ -37,16 +46,15 @@ class ClientController extends Controller
         // Menggunakan HTTP Client Guzzle Laravel
         $responses = $this->tripayService->getPaymentChannelsLaravel();  
         $result = json_decode($responses)->data;
-        //    dd($result);
-        // Menggunakan CURL
-        // $result = $this->tripayService->getPaymentChannels();  
+      
         
         $produk = Product::where('id', $id)->first();
-        // dd($produk);
+    
         return view('produk.produk',[
             'title' => "Pemesanan "
         ],compact('produk','result'));
     }
+    
     
     
     

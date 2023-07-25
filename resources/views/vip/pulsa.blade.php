@@ -1,13 +1,14 @@
 @extends('layout.client_main')
 @section('body')
 
+
 <section class="mt-4 mb-4">
     <div class="container">
         <div class="row">
             <div class="col-lg-4 mb-4">
                 <div class="card pt-4 pb-4 bg-light">
                     <div class="container">
-                        <img style="border-radius:20px;width:100%;" src="{{ asset('gambar_produk/'.$produk->gambar) }}" loading="lazy" alt="" class="text-center">
+                        <img style="border-radius:20px;width:100%;" src="" loading="lazy" alt="" class="text-center">
                         <div class="judul-produk pt-4">
                             <h1 style="font-size:24px;"></h1>
                             <!-- <h2 style="font-size:20px;"></h2> -->
@@ -33,7 +34,7 @@
                 <form action="#" method="post">
                     
                     {{-- @csrf {{ route("pembayaran") }} --}}
-                    <input type="hidden" value="{{ $produk->id }}" name="id" id="produk_id">
+                    
                     <div class="card mb-4 bg-light">
                         <div class="card-header card text-white bg-danger">
                             <span style="font-size:20px;">Lengkapi Data Pemesanan</span>
@@ -82,22 +83,30 @@
                             
                             <div class="row">
                                 
+                                @foreach ($filteredResults as $results)
+                            
+                                    
                                 <div class="col-md-4 col-lg-4 col-sm-4">
                                     
                                     <label>
-                                        <input type="hidden" value="{{ $produk->nama }}" name="produk_name" id="produk_name">
-                                        <input type="radio" name="product" id="product"  class="card-input-element" value="{{ $produk->harga }}" />
+                                       
+                                        <input type="radio" name="product" id="product"  class="card-input-element" value="{{ $results->code }}" />
                                         
                                         <div class="card card-input">
-                                            <div class="card-header mx-auto">{{ $produk->nama }}</div>
+                                            <div class="card-header mx-auto"></div>
                                             <div class="card-body mx-auto">
-                                                Rp.{{number_format( $produk->harga ) }}
+                                                {{ $results->name }}
+                                            </div>
+                                            <div class="card-body mx-auto">
+                                                Rp.{{ number_format( $results->price->basic ) }}
                                             </div>
                                         </div>
                                         
                                     </label>
                                     
                                 </div>
+                               
+                                @endforeach
                             </div>
                             
                         </div>
@@ -256,6 +265,7 @@
         </div>
     </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   
     <script>
         $(document).ready(function() {
             
