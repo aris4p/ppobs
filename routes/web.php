@@ -24,9 +24,9 @@ Route::get('/', [ClientController::class, 'index'])->name('home');
 
 Route::get('/produk/{id}', [ClientController::class, 'produk']);
 
-Route::get('/cek_saldo', [DigiflazzController::class, 'check_saldo']);
-Route::get('/cek_pulsa', [VipresellerController::class, 'getPulsaPrepaid']);
+
 Route::get('/pulsa/{kode}', [VipresellerController::class, 'pulsa']);
+Route::post('/pembayaran/pulsa', [VipresellerController::class, 'payment'])->name('payment');
 
 
 Route::get('/produk/{id}', [ClientController::class, 'produk']);

@@ -2,7 +2,7 @@
 
 
 namespace App\Services;
-
+use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Http;
 
@@ -210,6 +210,16 @@ class TripayService{
             $result = json_decode($response)->data;
             // dd($result);
            return $result;
+        }
+
+        public function updateCallback($product)
+        {
+            if($product->status != "PAID")
+                {
+                    $total = $product->product->qty+1;
+                    $produk = Product::where('id', $product->product_id );
+                    $produk->update(['qty' => $total]);
+                }
         }
     }
     

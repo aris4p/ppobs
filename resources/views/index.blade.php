@@ -98,28 +98,31 @@
                     
                     <div id="pulsa" class="tab-pane fade show ">
                         <div class="row mt-2">
-                          @foreach ($group as $brand => $groupBrand)
-                          
-                                  
-                              <div class="col-lg-2 col-4 pb-4">
-                                  <div class="card-group">
-                                      <div class="card">
-                                          <div class="card-body">
-                                            <a href="/pulsa/{{ $brand}}" ><img style="border-radius:20px;width:100px;height:100px" src="https://e0.pxfuel.com/wallpapers/688/852/desktop-wallpaper-pin-oleh-aury-otaku-di-doraemon-dengan-gambar-doraemon-kartun-yellow-doraemon.jpg" loading="lazy" alt="NETFLIX" sharing="" class="img-thumbnail text-center mt-2"></a>
-                                          
-                                              <h5 class="card-title text-center">{{ $brand }}</h5>
+                            @foreach ($group as $brand => $groupBrand)
+                            
+                            
+                            <div class="col-lg-2 col-4 pb-4">
+                                <div class="card-group">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <form action="{{ url('pulsa/' . $brand) }}" method="get">
                                              
-                                              
-                                              
-                                          
-                                              
-                                            </div>
+                                                <img style="border-radius:20px;width:100px;height:100px;" src="{{ asset('gambar_operator/'.$brand.'.png') }}" loading="lazy" alt="NETFLIX" sharing="" class=" img-thumbnail text-center mt-2">
+                                                <input type="submit" class="btn btn-primary mt-3" name="brand" value="{{ $brand }}" >
+                                               
+                                                
+                                                
+                                                
+                                                
+                                                
+                                            </form >
                                         </div>
                                     </div>
                                 </div>
-                                
-                                
-                          
+                            </div>
+                            
+                            
+                            
                             @endforeach
                             
                             

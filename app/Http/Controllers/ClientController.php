@@ -25,8 +25,8 @@ class ClientController extends Controller
     {
         $product = Product::all();
         $result = $this->vipresellerService->getPrepaid(); 
-        
-        $group= collect($result)->groupBy('brand');
+     
+        $group= collect($result)->where('status', 'available')->groupBy('brand');
         // dd($group);
         // foreach ($group as $brand => $groupBrand) {
       
@@ -77,6 +77,8 @@ class ClientController extends Controller
             'product_id' => $request->produk_id,
             'invoice' => $invoice_id,
             'reference' => $result->reference,
+            'email' => $result->customer_email,
+            'nohp' => $result->customer_phone,
             'amount' => $result->amount,
             'status' => $result->status,
             'createdAt' => $result->expired_time

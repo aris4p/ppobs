@@ -8,22 +8,15 @@
             <div class="col-lg-4 mb-4">
                 <div class="card pt-4 pb-4 bg-light">
                     <div class="container">
-                        <img style="border-radius:20px;width:100%;" src="" loading="lazy" alt="" class="text-center">
+                        
+                        
+                        <img style="border-radius:20px;width:100%;" src="{{ asset('gambar_operator/'.$request->brand.'.png') }}" loading="lazy" alt="" class="text-center">
                         <div class="judul-produk pt-4">
                             <h1 style="font-size:24px;"></h1>
                             <!-- <h2 style="font-size:20px;"></h2> -->
                         </div>
-                        <div class="deskripsi-produk pt-4">
-                            <p>Top up diamond Mobile Legends resmi Moonton 100% legal. Cara beli dm ML termurah. </p>
-                            <ul>
-                                <li>Masukkan ID</li>
-                                <li>Masukkan SERVER ID</li>
-                                <li>Pilih Nominal</li>
-                                <li>Pilih Pembayaran</li>
-                                <li>Klik Pesan Sekarang &amp; lakukan Pembayaran</li>
-                                <li>Diamonds masuk otomatis ke akun Anda </li>
-                            </ul>
-                        </div>
+                        
+                        
                     </div>
                 </div>
             </div>
@@ -64,48 +57,45 @@
                             <span style="font-size:20px;">Pilih Nominal</span>
                         </div>
                         <div class="card-body">
-                            {{-- <div class="row">
-                                
-                                
-                                <div class="col-lg-4 col-6">
-                                    <input class="btn-check" type="radio" name="harga" id="harga" required="">
-                                    <label class="btn btn-check-outline-danger pt-2 pb-2" style="width:100%; margin:0px;">
-                                        <small>{{ $produk->nama }}</small>
-                                        <br>
-                                        <small>{{ $produk->harga }}</small>
-                                    </label>
-                                </div>
-                                
-                                
-                                
-                                
-                            </div> --}}
+                            
                             
                             <div class="row">
                                 
                                 @foreach ($filteredResults as $results)
-                            
-                                    
+                                @php
+                                $price = $results->price->basic;
+                                $price = $results->price->basic+1500;
+                                if($price > 500) {
+                                    // Jika harga lebih besar dari 500, bulatkan ke atas
+                                    $price = ceil($price / 500) * 500;
+                                } else {
+                                    // Jika harga kurang dari atau sama dengan 500, bulatkan ke bawah
+                                    $price = floor($price / 500) * 500;
+                                }
+                                @endphp
+                                
                                 <div class="col-md-4 col-lg-4 col-sm-4">
                                     
+                                    
                                     <label>
-                                       
+                                        
                                         <input type="radio" name="product" id="product"  class="card-input-element" value="{{ $results->code }}" />
+                                        
                                         
                                         <div class="card card-input">
                                             <div class="card-header mx-auto"></div>
-                                            <div class="card-body mx-auto">
+                                            <div class="card-body mx-auto"  id="nama">
                                                 {{ $results->name }}
                                             </div>
-                                            <div class="card-body mx-auto">
-                                                Rp.{{ number_format( $results->price->basic ) }}
+                                            <div class="card-body mx-auto" id="harga">
+                                                Rp.{{ number_format( $price ) }}
                                             </div>
                                         </div>
                                         
                                     </label>
                                     
                                 </div>
-                               
+                                
                                 @endforeach
                             </div>
                             
@@ -265,14 +255,14 @@
         </div>
     </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-   
+    
     <script>
         $(document).ready(function() {
             
             let idproduct;
             let email;
             let nohp;
-            let namaproduct
+            let nama;
             let harga;
             let metodepembayaran;
             //Setup Global
@@ -292,13 +282,15 @@
                 let idproduct = $('#produk_id').val();
                 let email =  $('#email').val();
                 let nohp =  $('#nohp').val();
-                let namaproduct =  $('#produk_name').val();
-                let harga =  $('#product').val();
+                const selectedProduct = document.querySelector('input[name="product"]:checked');
+                let product = selectedProduct ? selectedProduct.value : "";
+                let nama = selectedProduct ? selectedProduct.parentElement.querySelector('.card-body.mx-auto#nama').innerText : "";
+                let harga = selectedProduct ? selectedProduct.parentElement.querySelector('.card-body.mx-auto#harga').innerText : "";
                 const selectedRadioButton =  document.querySelector('input[name="pembayaran"]:checked');
                 let metodepembayaran = selectedRadioButton.value;
                 document.getElementById('modalEmail').innerHTML = email;
                 document.getElementById('modalHp').innerHTML = nohp;
-                document.getElementById('modalNamaproduk').innerHTML = namaproduct;
+                document.getElementById('modalNamaproduk').innerHTML = nama;
                 document.getElementById('modalHarga').innerHTML = harga;
                 document.getElementById('modalMetodepembayaran').innerHTML = metodepembayaran;
                 
@@ -307,22 +299,27 @@
                 $('#btnpesan').click(function(){
                     const selectedRadioButton = document.querySelector('input[name="pembayaran"]:checked');
                     $.ajax({
-                        url: "{{ route('pembayaran') }}",
+                        url: "{{ route('payment') }}",
                         type:'POST',
                         data:{
-                            produk_id : idproduct,
+                            produk_id : product,
                             email : email,
                             nohp : nohp,
-                            namaproduct : namaproduct,
+                            namaproduct : nama,
                             harga : harga,
                             metodepembayaran : selectedRadioButton ? selectedRadioButton.value : ''
                         },
                         success:function(response){
-
+                           
                             let no_invoice =  response.invoice_id;
                             window.location.href = "{{ route('invoice') }}?no_invoice="+no_invoice;
                             
                         },
+                        error: function (xhr, status, error) {
+                            // Di sini Anda dapat menampilkan pesan kesalahan atau melakukan tindakan lain jika permintaan gagal.
+                            console.log("Error:", error);
+                            alert("Terjadi kesalahan saat mengirim permintaan.");
+                        }
                     });
                     closeModal();
                 });
@@ -332,5 +329,6 @@
     </script>
     
     @endsection
+    
     
     
