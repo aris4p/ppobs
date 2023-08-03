@@ -30,7 +30,7 @@ class VipresellerService {
                 'filter_value' => 'pulsa-reguler',
             ]);
             
-                // dd($response->body());
+                // dd(json_decode($response));
             if ($response->successful()) {
                 // If the request is successful, decode and return the 'data' field from the JSON response.
                 $result = json_decode($response)->data;
@@ -44,12 +44,13 @@ class VipresellerService {
         
         public function paymentGuzzle($request, $harga)
         {
-            
+            // dd($request->all());
             $apiKey       = config('Tripay.api_key');
             $privateKey   = config('Tripay.private_key');
             $merchantCode = 'T21486';
             $merchantRef  = 'INV6969';
             $amount       = intval($harga);
+            // dd($apiKey);
             
             $data = [
                 'method'         => $request->metodepembayaran,
@@ -64,8 +65,9 @@ class VipresellerService {
                         'name'        => $request->namaproduct,
                         'price'       => intval($harga),
                         'quantity'    => 1,
-                        'product_url' => 'https://tokokamu.com/product/nama-produk-1',
-                        'image_url'   => 'https://tokokamu.com/product/nama-produk-1.jpg',
+                        'product_url' => 'https://tokokamu.com/product/nama-produk-1.jpg',
+                        'image_url'   => asset("gambar_produk/$request->brand.png"),
+                        
                     ],
                     // [
                         //     'sku'         => 'FB-07',
@@ -82,12 +84,12 @@ class VipresellerService {
                 ];
                 
                 // dd($data);
-                $apikey = config('Tripay.api_key');
                 
-                $bearer = "Bearer $apikey";
+                
+                $bearer = "Bearer $apiKey";
                 
                 $response = Http::withHeaders([
-                    'Authorization' => "Bearer {$apikey}",
+                    'Authorization' => "Bearer {$apiKey}",
                     ])->post('https://tripay.co.id/api-sandbox/transaction/create', $data);
                     $responses = json_decode($response)->data;
                     // dd($responses);
@@ -106,9 +108,10 @@ class VipresellerService {
                     'service' => $product->pulsa_id,
                     'data_no' => $product->nohp
                 ]);
-                $responses = $response->body();
-    
-                return response()->json(['success' => $responses]);
+                // $responses = $response->body();
+                
+                $result = json_decode($response)->data;
+                return $result;
                 
             }else{
 

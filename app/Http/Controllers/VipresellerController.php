@@ -21,11 +21,12 @@ class VipresellerController extends Controller
     
     public function pulsa($kode, Request $request)
     {
-        
+        // dd($request->all());
         $responses = $this->tripayService->getPaymentChannelsLaravel();  
         $result = json_decode($responses)->data;
+        // dd($result);
         $result1 = $this->vipresellerService->getPrepaid(); 
-        // dd($result1);
+        // dd($result->total_fee);
         
         $filteredResults = [];
         foreach ($result1 as $results) {
@@ -74,6 +75,7 @@ class VipresellerController extends Controller
     
     public function payment(Request $request)
     {
+
         // String yang ingin diubah
         $str = $request->harga;
         

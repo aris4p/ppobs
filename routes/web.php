@@ -6,6 +6,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DigiflazzController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\VipresellerController;
 use App\Http\Controllers\Payment\TripayCallbackController;
 
@@ -50,7 +51,12 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'], function(){
         'create','show','destroy'
         ]]);
         // Route::post('/product/edit/{id}', [ProductController::class, 'simpanProduk'])->name('update-product');
+        
+    // transaction
+    Route::get('transaction', [TransactionController::class, 'index'])->name('transaction');
     });
+
+    
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);
 Route::post('/logout', [LoginController::class, 'logout']);

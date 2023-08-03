@@ -132,7 +132,7 @@ class ClientController extends Controller
         {
             
             
-            $transaction = Transaction::where('invoice', $request->no_invoice)->first();
+            $transaction = Transaction::with('product')->where('invoice', $request->no_invoice)->first();
             // Tripay Service
             $result = $this->tripayService->invoice($request, $transaction);
             // dd($result);

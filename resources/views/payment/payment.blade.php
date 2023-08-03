@@ -15,7 +15,7 @@
           <div class="row">
             <div class="col-lg-3 mb-4">
               <div class="card">
-                <img style="width:100%;" src="https://panel.nontonyuk.id/img/5.jpg" loading="lazy" alt="SPOTIFY PREMIUM" class="text-center">
+                <img style="width:100%;" src="{{ $items->image_url }}" loading="lazy" alt="{{ $items->name }}" class="text-center">
               </div>
             </div>
             <div class="col-lg">
@@ -36,10 +36,6 @@
                       <tr>
                         <th>Produk</th>
                         <td>{{ $items->name }}</td>
-                      </tr>
-                      <tr>
-                        <th>Item</th>
-                        <td>SPOTIFY 1Bulan</td>
                       </tr>
                       <tr>
                         <th>Email</th>
@@ -65,15 +61,24 @@
                         <th>Status Bayar</th>
                         <td>{{ $result->status }}</td>
                       </tr>
-                     @if ($result->payment_method  === "OVO")
-                     <tr>
-                      <td>
-                        <input type="hidden" id="urlCheckout" value={{ $result->checkout_url }}>
-                        <button class="btn btn-primary mt-3" onclick="processPayment()">Lanjutkan Pembayaran</button>
-                      </td>
-                     </tr>
-                       
-                     @endif
+                      @if ($result->status != "PAID")
+
+                      @if ($result->payment_method  === "OVO")
+                      <tr>
+                        <td>
+                          <input type="hidden" id="urlCheckout" value={{ $result->checkout_url }}>
+                          <button class="btn btn-primary mt-3" onclick="processPayment()">Lanjutkan Pembayaran</button>
+                        </td>
+                      </tr>
+                      @endif
+                      @else
+                      <tr> 
+                        <td rowspan="2">
+                          <span class="btn btn-primary">SUDAH TERBAYAR</span>
+                        </td>
+                      </tr> 
+                      
+                      @endif
                     </tbody>
                   </table>
                   <p class="small mt-4">*Cek SPAM pada email jika detail akun tidak masuk.</p>
@@ -127,15 +132,15 @@
     console.log(localTime);
     // Menampilkan waktu lokal
     document.getElementById("epoch").innerHTML="Silahkan Bayar Sebelum : "+localTime;
-
+    
     
     function processPayment(){
       let halPayment = document.getElementById("urlCheckout").value;
-     
+      
       window.open(halPayment, "_blank");
       
     }
-
+    
   </script>
   
   
