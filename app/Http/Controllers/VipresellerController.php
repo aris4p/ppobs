@@ -26,7 +26,8 @@ class VipresellerController extends Controller
         $result = json_decode($responses)->data;
         // dd($result);
         $result1 = $this->vipresellerService->getPrepaid(); 
-        // dd($result->total_fee);
+        
+      
         
         $filteredResults = [];
         foreach ($result1 as $results) {
@@ -34,7 +35,7 @@ class VipresellerController extends Controller
                 $filteredResults[] = $results;
             }
         }
-        // dd($filteredResults->brand);
+        // dd($filteredResults);
         
         
         // Urutkan array berdasarkan harga (asumsi $results->price adalah angka)

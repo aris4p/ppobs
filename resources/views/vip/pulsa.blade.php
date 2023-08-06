@@ -64,13 +64,18 @@
                                 @foreach ($filteredResults as $results)
                                 @php
                                 $price = $results->price->basic;
-                                $price = $results->price->basic+1500;
-                                if($price > 500) {
+                                
+                                if($price < 2000) {
                                     // Jika harga lebih besar dari 500, bulatkan ke atas
-                                    $price = ceil($price / 500) * 500;
-                                } else {
-                                    // Jika harga kurang dari atau sama dengan 500, bulatkan ke bawah
-                                    $price = floor($price / 500) * 500;
+                                    $price = (floor($price / 500)*500)+500;
+                                    
+                                } else if ($price < 10000) {
+                                    
+                                    $price = (ceil($price / 1000)*1000)+1000;
+                                } else if ($price < 25000){
+                                    $price  = (ceil($price / 1000)*1000)+1000;
+                                }else{
+                                    $price  = ceil($price / 1000)*1000+1000;
                                 }
                                 @endphp
                                 
@@ -137,16 +142,15 @@
                                                             <img src="{{ $pembayaran->icon_url }}" class="mx-auto mt-4" width="100px">
                                                             <br>
                                                             <div class="card-header  d-flex align-items-center justify-content-center">{{ $pembayaran->name }}</div>
-                                                            <input type="hidden" class="flat" value="{{  $pembayaran->total_fee->flat  }}">
-                                                            <input type="hidden" class="percent" value="{{  $pembayaran->total_fee->percent  }}">
                                                             
                                                             
                                                             <div class="card-body d-flex justify-content-center total_fee">
                                                                 <input type="hidden" class="flat" value="{{  $pembayaran->total_fee->flat  }}">
                                                                 <input type="hidden" class="percent" value="{{  $pembayaran->total_fee->percent  }}">
+                                                                <input type="hidden" class="kode" value="{{  $pembayaran->type  }}">
                                                                 
                                                                 <span class="total" ></span>
-                                                                </div>
+                                                            </div>
                                                         </div>
                                                         
                                                     </label>
@@ -179,11 +183,11 @@
                                                             <img src="{{ $pembayaran->icon_url }}" class="mx-auto mt-4" width="100px">
                                                             <br>
                                                             <div class="card-header text-center">{{ $pembayaran->name }}</div>
-                                                           
+                                                            
                                                             <div class="card-body text-center total_fee"> 
                                                                 <input type="hidden" class="flat" value="{{  $pembayaran->total_fee->flat  }}">
                                                                 <input type="hidden" class="percent" value="{{  $pembayaran->total_fee->percent  }}">
-                                                                
+                                                                <input type="hidden" class="kode" value="{{  $pembayaran->type  }}">
                                                                 <span class="total"></span>
                                                             </div>
                                                         </div>
@@ -323,7 +327,7 @@
                 document.getElementById('modalEmail').innerHTML = email;
                 document.getElementById('modalHp').innerHTML = nohp;
                 document.getElementById('modalNamaproduk').innerHTML = nama;
-            
+                
                 document.getElementById('modalHarga').innerHTML = harga;
                 document.getElementById('modalMetodepembayaran').innerHTML = metodepembayaran;
                 
@@ -405,6 +409,7 @@
         function updateTotalFee() {
             
             $('.total_fee').each(function(index, element) {
+                let type = $(element).find(".kode").val();
                 let flatss = $(element).find(".flat").val();
                 let percentss = $(element).find(".percent").val();
                 let flats = parseFloat(flatss);
@@ -427,11 +432,17 @@
                 
                 // Menghitung nilai dari persentase berdasarkan input persen
                 let percentFee = (amount * percents) / 100;
-                
+                if (type === "redirect") {
+                    
+                    if (percentFee < 1000) {
+                        percentFee = 1000;
+                    }
+                }
+         
                 // Menghitung total jumlah yang diinginkan
                 let jumlah = amount + flats + percentFee;
                 
-                $(element).find(".total").text("Rp " +jumlah);
+                $(element).find(".total").text("Rp. " +jumlah.toLocaleString("en-US"));
             });
         }
         
